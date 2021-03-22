@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Stein, saks, papir</title>
+
+		<style>
+			body {
+				font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+				font-size: 21px;
+				background-color: mediumturquoise;
+				text-align: center;
+				margin: 0;
+			}
+
+			main {
+				margin: 0px 50px 25px 50px;
+			}
+
+			#overskrift {
+				background-color: rgb(119, 239, 255);
+				padding: 20px;
+				margin-top: 0;
+				border-bottom: 2px solid black;
+			}
+
+			#btnStart,
+			#btnSpill,
+			#btnBattleMode,
+			#btnNyRunde,
+			#btnTrainingTilbakeTilValg,
+			#btnAvsluttSpill,
+			#btnStartBattle,
+			#btnBattleTilbakeTilValg,
+			#buttonVelgPoeng {
+				background-color: orange;
+				font-size: 21px;
+				padding: 10px;
+				border-radius: 10px;
+				transition: transform 0.15s;
+				margin: 5px;
+			}
+
+			#btnStart:hover,
+			#btnSpill:hover,
+			#btnBattleMode:hover,
+			#btnNyRunde:hover,
+			#btnTrainingTilbakeTilValg:hover,
+			#btnAvsluttSpill:hover,
+			#btnStartBattle:hover,
+			#btnBattleTilbakeTilValg:hover,
+			#buttonVelgPoeng:hover {
+				transform: scale(1.05);
+			}
+
+			#divSpillet,
+			#divTrainingMode,
+			#divBattleMode,
+			#divVisBattle,
+			#divSpillTilbakemelding {
+				display: none;
+			}
+
+			.txtSpillmodus {
+			}
+
+			#inpAntallPoeng {
+				font-size: 18px;
+				text-align: center;
+				padding: 10px;
+				width: 50px;
+				border-radius: 10px;
+				transition: transform 0.15s;
+			}
+
+			#inpAntallPoeng:hover {
+				transform: scale(1.05);
+			}
+
+			.valgbartBilde {
+				margin-top: 20px;
+				margin-left: 15px;
+				margin-right: 15px;
+				width: 100px;
+				height: 90px;
+				transition: transform 0.15s;
+			}
+
+			.valgbartBilde:hover {
+				transform: scale(1.05);
+			}
+
+			#divVisValg {
+				display: flex;
+				justify-content: center;
+			}
+
+			#divVisMenneskeValg,
+			#divVisMaskinValg {
+				background-color: rgb(119, 239, 255);
+				border: 1px solid black;
+				height: 200px;
+				width: 200px;
+
+				margin-left: 5px;
+				margin-right: 5px;
+				text-align: center;
+			}
+
+			#divVisResultat {
+				display: flex;
+				justify-content: center;
+			}
+
+			#divVisMenneskeResultat,
+			#divVisMaskinResultat {
+				width: 200px;
+				margin-left: 5px;
+				margin-right: 5px;
+				margin-top: -20px;
+			}
+
+			#bildeSomErValgt,
+			#bildeMaskinenVelger {
+				height: 130px;
+				width: 150px;
+				margin-top: 35px;
+			}
+
+			#txtRundeTilbakemelding {
+				margin: -10px;
+			}
+			footer {
+				border-top: 1px solid black;
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				right: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1 id="overskrift">Stein, saks, papir!</h1>
+
+			<div id="divIntro">
+				<h3>Velkommen til spillet. Her er reglene:</h3>
+				<p id="txtInstruksjoner">
+					I dette spillet skal du konkurrere mot datamaskinen.<br />Trykk på start for å åpne
+					spillet!
+				</p>
+				<button id="btnStart" onclick="start()">START</button>
+			</div>
+		</header>
+		<main>
+			<div id="divSpillet">
+				<h3>Velg spillmodus</h3>
+				<p class="txtSpillmodus">
+					<u>Training mode</u> lar deg spille mot skjermen. Ingen teller poeng. Modusen gjør deg
+					klar til å slå hvem som helst i den virkelige verden.
+				</p>
+				<p class="txtSpillmodus">
+					<u>Battle mode</u> lar deg velge stein, saks eller papir på skjermen, og maskinen vil
+					konkurrere mot deg. Du velger antall runder! Klarer du å vinne?
+				</p>
+				<button id="btnSpill" onclick="trainingMode()">Training</button>
+				<button id="btnBattleMode" onclick="battleMode()">Battle</button><br />
+				<button id="btnAvsluttSpill" onclick="avsluttSpill()">Avslutt spill</button>
+			</div>
+
+			<div id="divTrainingMode">
+				<h3>Training mode</h3>
+				<div id="trainingKnappDiv">
+					<button id="btnNyRunde" onclick="nyRunde()">Start runde</button>
+					<button id="btnTrainingTilbakeTilValg" onclick="tilbakeTilValg()">Gå tilbake</button>
+				</div>
+				<h4 id="txtUtTraining"></h4>
+				<img id="idBilde" src="" width="250px" />
+			</div>
+
+			<div id="divBattleMode">
+				<h3>Battle mode</h3>
+
+				<button id="btnStartBattle" onclick="startBattle()">Start battle</button>
+				<button id="btnBattleTilbakeTilValg" onclick="tilbakeTilValg()">Gå tilbake</button>
+
+				<div id="divAntallPoeng">
+					<p>Velg antall poeng dere skal spille til.</p>
+					<input id="inpAntallPoeng" type="number" value="3" />
+					<button id="buttonVelgPoeng" onclick="registrerAntallPoeng()">OK</button>
+					<p id="txtVelgAntallPoeng">Førstemann til 3 poeng!</p>
+				</div>
+
+				<div id="divVisBattle">
+					<img class="valgbartBilde" id="valgbartBildeStein" src="bilder/stein.png" />
+					<img class="valgbartBilde" id="valgbartBildeSaks" src="bilder/saks.png" />
+					<img class="valgbartBilde" id="valgbartBildePapir" src="bilder/papir.png" /><br /><br />
+
+					<div id="divVisValg">
+						<div id="divVisMenneskeValg">
+							<img id="bildeSomErValgt" width="150px" height="130px" />
+						</div>
+						<div id="divVisMaskinValg">
+							<img id="bildeMaskinenVelger" width="150px" height="130px" />
+						</div>
+					</div>
+
+					<div id="divVisResultat">
+						<div id="divVisMenneskeResultat">
+							<h4 id="txtUtMenneskeResultat">Deg: 0p</h4>
+						</div>
+						<div id="divVisMaskinResultat">
+							<h4 id="txtUtMaskinResultat">Maskin: 0p</h4>
+						</div>
+					</div>
+					<h4 id="txtRundeTilbakemelding"></h4>
+				</div>
+			</div>
+
+			<div id="divSpillTilbakemelding">
+				<h2 id="txtSpillTilbakemelding">VICTORY</h2>
+				<h4 id="txtSpillScore">Resultatet ble:</h4>
+			</div>
+		</main>
+		<footer>
+			<p>Laget av Herman</p>
+		</footer>
+
+		<script>
+			let bilder = new Array();
+			bilder[0] = 'bilder/stein.png';
+			bilder[1] = 'bilder/saks.png';
+			bilder[2] = 'bilder/papir.png';
+
+			function start() {
+				knappTrykket();
+				divIntro.style.display = 'none';
+				divSpillet.style.display = 'block';
+			}
+
+			function trainingMode() {
+				knappTrykket();
+				divSpillet.style.display = 'none';
+				divTrainingMode.style.display = 'block';
+			}
+
+			function battleMode() {
+				knappTrykket();
+				divSpillet.style.display = 'none';
+				divBattleMode.style.display = 'block';
+				divAntallPoeng.style.display = 'block';
+				bildeSomErValgt.style.opacity = '0';
+				bildeMaskinenVelger.style.opacity = '0';
+			}
+
+			let tellOpp;
+			function nyRunde() {
+				knappTrykket();
+				btnNyRunde.disabled = true;
+				btnTrainingTilbakeTilValg.disabled = true;
+				let bilde = document.getElementById('idBilde');
+				tellOpp = setInterval(tellOppFunction, 1000);
+				txtUtTraining.innerHTML = 'STEIN, ';
+
+				bilde.src = '';
+			}
+
+			let valg = ['STEIN, ', 'SAKS, ', 'PAPIR!'];
+			let tellOppTall = 0;
+			function tellOppFunction() {
+				tellOppTall++;
+				txtUtTraining.innerHTML += valg[tellOppTall];
+
+				if (tellOppTall >= 2) {
+					clearInterval(tellOpp);
+					tellOppTall = 0;
+					kjørSpill();
+				}
+			}
+
+			function kjørSpill() {
+				btnNyRunde.disabled = false;
+				btnTrainingTilbakeTilValg.disabled = false;
+				let lydStein = new Audio('lyder/steinLyd.mp3');
+				let lydSaks = new Audio('lyder/saksLyd.mp3');
+				let lydPapir = new Audio('lyder/papirLyd.mp3');
+
+				let bilde = document.getElementById('idBilde');
+				let randomTall = Math.floor(Math.random() * 3);
+				console.log(randomTall);
+
+				if (randomTall == 0) {
+					bilde.src = bilder[0];
+					lydStein.play();
+				} else if (randomTall == 1) {
+					bilde.src = bilder[1];
+					lydSaks.play();
+				} else {
+					bilde.src = bilder[2];
+					lydPapir.play();
+				}
+			}
+
+			function avsluttSpill() {
+				knappTrykket();
+				divSpillet.style.display = 'none';
+				divIntro.style.display = 'block';
+			}
+
+			function tilbakeTilValg() {
+				knappTrykket();
+				divTrainingMode.style.display = 'none';
+				divBattleMode.style.display = 'none';
+				divSpillet.style.display = 'block';
+				btnStartBattle.disabled = false;
+				divVisBattle.style.display = 'none';
+				divSpillTilbakemelding.style.display = 'none';
+
+				bildeSomErValgt.src = '';
+				bildeSomErValgt.style.opacity = '0';
+				bildeMaskinenVelger.src = '';
+				bildeMaskinenVelger.style.opacity = '0';
+
+				txtRundeTilbakemelding.innerHTML = '';
+
+				menneskePoeng = 0;
+				maskinPoeng = 0;
+				oppdaterPoengSum();
+
+				let bilde = document.getElementById('idBilde');
+				bilde.src = '';
+				txtUtTraining.innerHTML = '';
+			}
+
+			function knappTrykket() {
+				let knappeLyd = new Audio('lyder/klikkLyd.mp3');
+				knappeLyd.play();
+			}
+
+			function startBattle() {
+				knappTrykket();
+				btnStartBattle.disabled = true;
+				divVisBattle.style.display = 'block';
+				divAntallPoeng.style.display = 'none';
+				divSpillTilbakemelding.style.display = 'none';
+
+				bildeSomErValgt.src = '';
+				bildeSomErValgt.style.opacity = '0';
+				bildeMaskinenVelger.src = '';
+				bildeMaskinenVelger.style.opacity = '0';
+				txtRundeTilbakemelding.innerHTML = '';
+
+				menneskePoeng = 0;
+				maskinPoeng = 0;
+				oppdaterPoengSum();
+			}
+
+			inpAntallPoeng.addEventListener('keyup', function (event) {
+				if (event.keyCode === 13) {
+					knappTrykket();
+					registrerAntallPoeng();
+				}
+			});
+
+			let seiersPoeng = 3;
+			function registrerAntallPoeng() {
+				knappTrykket();
+				seiersPoeng = Number(inpAntallPoeng.value);
+				if (seiersPoeng > 99) {
+					txtVelgAntallPoeng.innerHTML = `Venligst velg færre poeng å spille til. Prøv igjen.`;
+					seiersPoeng = 3;
+				} else if (seiersPoeng < 1) {
+					txtVelgAntallPoeng.innerHTML = `Venligst velg flere poeng å spille til. Prøv igjen.`;
+					seiersPoeng = 3;
+				} else {
+					txtVelgAntallPoeng.innerHTML = `Førstemann til ${seiersPoeng} poeng!`;
+				}
+			}
+
+			let battleRunder = 5;
+			let bildeValgtVariabel;
+
+			valgbartBildeStein.onclick = function () {
+				knappTrykket();
+				bildeValgtVariabel = 0;
+				bildeValgt();
+			};
+			valgbartBildeSaks.onclick = function () {
+				knappTrykket();
+				bildeValgtVariabel = 1;
+				bildeValgt();
+			};
+
+			valgbartBildePapir.onclick = function () {
+				knappTrykket();
+				bildeValgtVariabel = 2;
+				bildeValgt();
+			};
+
+			function bildeValgt() {
+				//Hvilket bilde er valgt?
+				// Få bildet opp i boksen.
+				bildeSomErValgt.style.opacity = '100';
+				bildeMaskinenVelger.style.opacity = '100';
+
+				if (bildeValgtVariabel == 0) {
+					bildeSomErValgt.src = bilder[0];
+				} else if (bildeValgtVariabel == 1) {
+					bildeSomErValgt.src = bilder[1];
+				} else {
+					bildeSomErValgt.src = bilder[2];
+				}
+
+				maskinenVelger();
+			}
+
+			function maskinenVelger() {
+				let randomTall = Math.floor(Math.random() * 3);
+				console.log(randomTall);
+
+				if (randomTall == 0) {
+					bildeMaskinenVelger.src = bilder[0];
+				} else if (randomTall == 1) {
+					bildeMaskinenVelger.src = bilder[1];
+				} else {
+					bildeMaskinenVelger.src = bilder[2];
+				}
+
+				//Sjekker poengsum.
+				if (bildeValgtVariabel == 0 && randomTall == 0) {
+					//Stein - stein
+					uavgjort();
+				} else if (bildeValgtVariabel == 0 && randomTall == 1) {
+					// Stein - saks
+					menneskeVant();
+				} else if (bildeValgtVariabel == 0 && randomTall == 2) {
+					maskinVant();
+				} else if (bildeValgtVariabel == 1 && randomTall == 0) {
+					// Saks - stein
+					maskinVant();
+				} else if (bildeValgtVariabel == 1 && randomTall == 1) {
+					// Saks - saks
+					uavgjort();
+				} else if (bildeValgtVariabel == 1 && randomTall == 2) {
+					menneskeVant();
+				} else if (bildeValgtVariabel == 2 && randomTall == 0) {
+					menneskeVant();
+				} else if (bildeValgtVariabel == 2 && randomTall == 1) {
+					maskinVant();
+				} else {
+					uavgjort();
+				}
+			}
+
+			let menneskePoeng = 0;
+			let maskinPoeng = 0;
+			let lydRundeSeier = new Audio('lyder/rundeSeierLyd.mp3');
+			let lydRundeTap = new Audio('lyder/rundeTapLyd.mp3');
+			let lydRundeUavgjort = new Audio('lyder/rundeTapLyd.mp3');
+
+			function uavgjort() {
+				lydRundeUavgjort.play();
+
+				txtRundeTilbakemelding.innerHTML = 'UAVGJORT';
+				oppdaterPoengSum();
+			}
+
+			function menneskeVant() {
+				menneskePoeng++;
+				lydRundeSeier.play();
+
+				txtRundeTilbakemelding.innerHTML = 'DU VANT';
+				oppdaterPoengSum();
+			}
+
+			function maskinVant() {
+				maskinPoeng++;
+				lydRundeTap.play();
+
+				txtRundeTilbakemelding.innerHTML = 'MASKINEN VANT';
+				oppdaterPoengSum();
+			}
+
+			let tilbakemeldingVariabel;
+			function oppdaterPoengSum() {
+				let lydSeier = new Audio('lyder/lydSeier.mp3');
+				let lydTap = new Audio('lyder/lydTap.mp3');
+				let lydUavgjort = new Audio('lyder/lydUavgjort.mp3');
+
+				txtUtMenneskeResultat.innerHTML = `<h4>Deg: ${menneskePoeng}p</h4>`;
+				txtUtMaskinResultat.innerHTML = `<h4>Maskin: ${maskinPoeng}p</h4>`;
+
+				if (menneskePoeng == seiersPoeng && maskinPoeng == seiersPoeng) {
+					// UAVGJORT
+					tilbakemeldingVariabel = 'uavgjort';
+					SpillTilbakemelding();
+					lydUavgjort.play();
+				} else if (maskinPoeng >= seiersPoeng && menneskePoeng < seiersPoeng) {
+					//Maskin vant.
+					tilbakemeldingVariabel = 'tap';
+					SpillTilbakemelding();
+					lydTap.play();
+				} else if (menneskePoeng >= seiersPoeng && maskinPoeng < seiersPoeng) {
+					//Menneske vant.
+					tilbakemeldingVariabel = 'seier';
+					SpillTilbakemelding();
+					lydSeier.play();
+				}
+			}
+
+			function SpillTilbakemelding() {
+				if (tilbakemeldingVariabel == 'uavgjort') {
+					txtSpillTilbakemelding.innerHTML = 'DRAW...';
+				} else if (tilbakemeldingVariabel == 'tap') {
+					txtSpillTilbakemelding.innerHTML = 'You lost...';
+				} else {
+					txtSpillTilbakemelding.innerHTML = 'VICTORY!';
+				}
+				txtSpillScore.innerHTML = `Resultatet ble:<br> ${menneskePoeng}p - ${maskinPoeng}p `;
+
+				divVisBattle.style.display = 'none';
+				divSpillTilbakemelding.style.display = 'block';
+
+				btnStartBattle.disabled = false;
+			}
+		</script>
+	</body>
+</html>
